@@ -7,27 +7,85 @@
 // [“1234”, “1567”, “-2”, “computer science”] → [“-2”]
 // [“Russia”, “Denmark”, “Kazan”] → []
 
-
-string[] FillArray(string[] array)
+int[] FillArrayIndex()
 {
-    Random random = new Random();
-    int a = random.Next(0, 4);
-    string[] numbers = new string[a];
-        Console.WriteLine($"Рандомное число для длинны массива: {a}");
-    for (int x = 0; x < numbers.Length; x++)
+    Random rnd = new Random();
+    int temp;
+    int a = rnd.Next(0, 4);
+    int[] array = new int[a];
+    for (int i = 0; i < a; i++)
     {
+
+        temp = rnd.Next(0, 5);
+        while (SearchDublicate(temp, array))
         {
-            int b = random.Next(0, numbers.Length);
-            numbers[x] = array[b];
+            temp = rnd.Next(0, 5);
         }
+        array[i] = temp;
+
     }
-    return numbers;
+
+    return array;
 }
 
-void PrintArray(string[] array)
+bool SearchDublicate(int tmp, int[] array)
+{
+    foreach (var item in array)
+    {
+        if (item == tmp)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+int[] SelectionSort(int[] array)
+{
+    int temp;
+    for (int i = 0; i < array.Length; i++)
+    {
+        for (int j = 0; j < array.Length - 1 - i; j++)
+        {
+            if (array[j] > array[j + 1])
+            {
+                temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
+            }
+        }
+    }
+    return array;
+}
+
+string[] FillArrayString(string[] array, int[] index)
+{
+    string[] arrayNew = new string[index.Length];
+    for (int x = 0; x < index.Length; x++)
+    {
+        {
+            arrayNew[x] = array[index[x]-1];
+        }
+    }
+    return arrayNew;
+}
+
+void PrintArrayString(string[] array)
 {
     int count = array.Length;
-    Console.Write("Исходный массив: ");
+    Console.Write("[");
+        for (int i = 0; i < count; i++)
+    {
+        Console.Write($"{array[i]} ");
+    }
+    Console.Write("]");
+    Console.WriteLine();
+}
+
+void PrintArrayInt(int[] array)
+{
+    int count = array.Length;
+    Console.Write("Индексы для печати: ");
     for (int i = 0; i < count; i++)
     {
         Console.Write($"{array[i]} ");
@@ -37,6 +95,11 @@ void PrintArray(string[] array)
 
 
 string[] arrayOriginal = { "HelloWorld", "725", "Create", ":-)", "-2" };
-PrintArray(arrayOriginal);
-string [] arrayNew = FillArray(arrayOriginal);
-PrintArray(arrayNew);
+Console.Write("Исходный массив: ");
+PrintArrayString(arrayOriginal);
+int[] index = FillArrayIndex();
+SelectionSort(index);
+PrintArrayInt(index);
+string[] arrayNew = FillArrayString(arrayOriginal, index);
+Console.Write("Полученный массив: ");
+PrintArrayString (arrayNew);
